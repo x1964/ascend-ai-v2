@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASCEND AI — AI Chat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>⚡</text></svg>">
+</head>
+<body>
+  <div class="bg-orbs"></div>
+  <div class="bg-grid"></div>
+  <div id="toast-container"></div>
+  <button class="mobile-nav-toggle">☰</button>
+  <div class="sidebar-overlay"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo"><div class="logo-bolt">⚡</div><span class="logo-text">ASCEND</span></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Navigate</div>
+        <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="tasks.html"     class="nav-item"><span class="nav-icon">📋</span>Tasks</a>
+        <a href="chat.html"      class="nav-item"><span class="nav-icon">🤖</span>AI Chat</a>
+        <div class="nav-section-label">Account</div>
+        <a href="profile.html"   class="nav-item"><span class="nav-icon">👤</span>Profile</a>
+        <a href="#" class="nav-item" onclick="logout();return false;"><span class="nav-icon">🚪</span>Logout</a>
+      </nav>
+      <div class="sidebar-user" onclick="window.location='profile.html'">
+        <div class="user-avatar" id="user-avatar-text">?</div>
+        <div class="user-info">
+          <div class="user-name"  id="sidebar-user-name">Loading…</div>
+          <div class="user-level" id="sidebar-user-level">LVL 1 · 0 XP</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" style="display:flex;flex-direction:column;padding-bottom:0">
+      <div class="page-header" style="margin-bottom:16px">
+        <div>
+          <h2>AI Coach</h2>
+          <div class="page-subtitle">// powered by GPT-4o · context-aware</div>
+        </div>
+        <button class="btn btn-ghost" onclick="clearChat()" style="padding:9px 16px;font-size:0.8rem;border-radius:10px">🗑 Clear</button>
+      </div>
+
+      <div class="chat-layout" style="flex:1">
+        <div class="chat-messages" id="chat-messages">
+          <div id="chat-welcome" class="chat-welcome">
+            <div class="ai-orb">⚡</div>
+            <h3>ASCEND AI Coach</h3>
+            <p style="max-width:360px;font-size:0.85rem">Your elite productivity coach. I remember our conversation and give you real, actionable strategies.</p>
+            <div class="chat-suggestions">
+              <button class="suggestion-chip" onclick="useSuggestion('Build me a power morning routine')">📅 Morning routine</button>
+              <button class="suggestion-chip" onclick="useSuggestion('How do I build deep focus habits?')">🎯 Deep focus</button>
+              <button class="suggestion-chip" onclick="useSuggestion('I feel unmotivated. How do I get back on track?')">💪 Motivation</button>
+              <button class="suggestion-chip" onclick="useSuggestion('What is the best productivity system for a developer?')">🔧 Systems</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="chat-input-wrap">
+            <textarea id="chat-input" class="chat-textarea" placeholder="Ask your AI coach… (Enter to send, Shift+Enter for new line)" rows="1"></textarea>
+            <button class="chat-send-btn" onclick="sendMessage()" title="Send">➤</button>
+          </div>
+          <p style="font-size:0.68rem;color:var(--text-muted);margin-top:8px;font-family:var(--font-mono)">
+            Add your OpenAI key in <a href="profile.html" style="color:var(--volt)">Profile → AI Config</a>
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    function clearChat() {
+      chatHistory = [];
+      const msgs = document.getElementById('chat-messages');
+      msgs.innerHTML = '';
+      const welcome = document.createElement('div');
+      welcome.id = 'chat-welcome';
+      welcome.className = 'chat-welcome';
+      welcome.innerHTML = `
+        <div class="ai-orb">⚡</div>
+        <h3>ASCEND AI Coach</h3>
+        <p style="max-width:360px;font-size:0.85rem">Chat cleared. What do you want to work on?</p>
+      `;
+      msgs.appendChild(welcome);
+    }
+  </script>
+</body>
+</html>

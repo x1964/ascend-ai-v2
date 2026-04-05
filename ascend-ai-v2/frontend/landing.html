@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASCEND AI — Level Up Your Life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>⚡</text></svg>">
+  <style>
+    /* ═══════════════════════════════════════
+       ASCEND AI V2 — Landing Page
+       Aesthetic: Cinematic Dark · Volt Neon
+    ═══════════════════════════════════════ */
+
+    :root {
+      --void:       #03040a;
+      --deep:       #070a14;
+      --surface:    #0c1020;
+      --card:       rgba(12,16,32,0.8);
+      --glass:      rgba(255,255,255,0.04);
+      --glass2:     rgba(255,255,255,0.07);
+
+      --volt:       #c8ff00;
+      --volt-dim:   rgba(200,255,0,0.15);
+      --volt-glow:  rgba(200,255,0,0.35);
+      --blue:       #4f8eff;
+      --purple:     #9b5de5;
+      --cyan:       #00d4ff;
+      --pink:       #ff3fa4;
+
+      --text:       #eef2ff;
+      --text-sub:   #7a85a3;
+      --text-muted: #3d4460;
+      --border:     rgba(255,255,255,0.07);
+      --border-v:   rgba(200,255,0,0.2);
+
+      --font-head:  'Clash Display', sans-serif;
+      --font-body:  'Bricolage Grotesque', sans-serif;
+      --font-mono:  'JetBrains Mono', monospace;
+
+      --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--void);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      cursor: none;
+    }
+
+    /* ── Custom Cursor ── */
+    #cursor {
+      position: fixed; top: 0; left: 0;
+      width: 12px; height: 12px;
+      background: var(--volt);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.15s var(--ease-out), opacity 0.2s;
+      transform: translate(-50%, -50%);
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(200,255,0,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s var(--ease-out), width 0.3s, height 0.3s, opacity 0.2s;
+      transform: translate(-50%, -50%);
+    }
+    body:hover #cursor { opacity: 1; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--void); }
+    ::-webkit-scrollbar-thumb { background: var(--volt-dim); border-radius: 99px; }
+
+    /* ── Canvas background ── */
+    #bg-canvas {
+      position: fixed; inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Noise overlay ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1;
+      opacity: 0.35;
+    }
+
+    /* ══════════════ NAV ══════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.4s var(--ease-out);
+    }
+    nav.scrolled {
+      background: rgba(3,4,10,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 48px;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-head);
+      font-size: 1.4rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-logo .logo-bolt {
+      width: 34px; height: 34px;
+      background: var(--volt);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      box-shadow: 0 0 20px var(--volt-glow);
+      flex-shrink: 0;
+    }
+    .nav-logo span { color: var(--volt); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.88rem; font-weight: 500;
+      color: var(--text-sub);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .btn-nav-ghost {
+      padding: 9px 20px;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      background: transparent;
+      color: var(--text-sub);
+      font-family: var(--font-body);
+      font-size: 0.85rem; font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-nav-ghost:hover { border-color: var(--border-v); color: var(--text); }
+
+    .btn-nav-primary {
+      padding: 9px 22px;
+      background: var(--volt);
+      border: none; border-radius: 99px;
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 0.85rem; font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px var(--volt-glow);
+    }
+    .btn-nav-primary:hover { transform: scale(1.04); box-shadow: 0 0 30px var(--volt-glow); }
+
+    .nav-mobile-toggle { display: none; }
+
+    /* ══════════════ HERO ══════════════ */
+    .hero {
+      position: relative; z-index: 2;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(200,255,0,0.08);
+      border: 1px solid var(--border-v);
+      border-radius: 99px;
+      padding: 7px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--volt);
+      letter-spacing: 0.05em;
+      margin-bottom: 32px;
+      animation: fade-up 0.8s var(--ease-out) both;
+    }
+    .hero-badge .badge-dot {
+      width: 6px; height: 6px;
+      background: var(--volt);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+      animation: fade-up 0.9s var(--ease-out) 0.1s both;
+    }
+    .hero-title .line-volt {
+      color: var(--volt);
+      display: block;
+      position: relative;
+    }
+    .hero-title .line-volt::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 3px;
+      background: var(--volt);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: underline-draw 1s var(--ease-out) 1.2s forwards;
+      opacity: 0.5;
+    }
+    @keyframes underline-draw { to { transform: scaleX(1); } }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--text-sub);
+      max-width: 540px;
+      line-height: 1.65;
+      margin-top: 28px;
+      animation: fade-up 0.9s var(--ease-out) 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 14px;
+      margin-top: 44px;
+      flex-wrap: wrap; justify-content: center;
+      animation: fade-up 0.9s var(--ease-out) 0.35s both;
+    }
+
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 36px;
+      background: var(--volt);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 1rem; font-weight: 700;
+      border-radius: 99px; border: none;
+      text-decoration: none; cursor: pointer;
+      transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 0 40px var(--volt-glow), 0 8px 32px rgba(200,255,0,0.2);
+      position: relative; overflow: hidden;
+    }
+    .btn-hero-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.15);
+      transform: translateX(-100%);
+      transition: transform 0.4s var(--ease-out);
+    }
+    .btn-hero-primary:hover::before { transform: translateX(0); }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px var(--volt-glow), 0 16px 40px rgba(200,255,0,0.25); }
+    .btn-hero-primary .btn-arrow { font-size: 1.1rem; transition: transform 0.2s; }
+    .btn-hero-primary:hover .btn-arrow { transform: translateX(4px); }
+
+    .btn-hero-ghost {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 15px 30px;
+      background: var(--glass2);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem; font-weight: 500;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      text-decoration: none; cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s;
+    }
+    .btn-hero-ghost:hover { border-color: var(--border-v); background: rgba(200,255,0,0.05); }
+
+    .hero-social-proof {
+      display: flex; align-items: center; gap: 16px;
+      margin-top: 56px;
+      animation: fade-up 0.9s var(--ease-out) 0.5s both;
+    }
+    .avatars-stack {
+      display: flex;
+    }
+    .avatars-stack .av {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--void);
+      margin-left: -10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .avatars-stack .av:first-child { margin-left: 0; }
+    .av-1 { background: linear-gradient(135deg,#ff6b6b,#ff3fa4); }
+    .av-2 { background: linear-gradient(135deg,#4f8eff,#9b5de5); }
+    .av-3 { background: linear-gradient(135deg,#00d4ff,#4f8eff); }
+    .av-4 { background: linear-gradient(135deg,#c8ff00,#00d4ff); color:#000; }
+    .av-5 { background: linear-gradient(135deg,#ff9500,#ff3fa4); }
+
+    .proof-text {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+    .proof-text strong { color: var(--text); }
+    .stars { color: var(--volt); letter-spacing: 2px; font-size: 0.7rem; }
+
+    /* ── Hero App Preview ── */
+    .hero-preview {
+      position: relative;
+      margin-top: 72px;
+      width: 100%; max-width: 900px;
+      animation: fade-up 1s var(--ease-out) 0.6s both;
+    }
+    .preview-glow {
+      position: absolute;
+      bottom: -60px; left: 50%; transform: translateX(-50%);
+      width: 70%; height: 200px;
+      background: radial-gradient(ellipse, rgba(200,255,0,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .preview-window {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(200,255,0,0.05);
+    }
+    .preview-topbar {
+      background: var(--deep);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .preview-dots { display: flex; gap: 7px; }
+    .preview-dot {
+      width: 11px; height: 11px; border-radius: 50%;
+    }
+    .pd-r { background: #ff5f57; }
+    .pd-y { background: #febc2e; }
+    .pd-g { background: #28c840; }
+    .preview-bar {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      height: 22px;
+      display: flex; align-items: center;
+      padding: 0 12px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .preview-body {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      min-height: 380px;
+    }
+    .preview-sidebar {
+      background: rgba(7,10,20,0.8);
+      border-right: 1px solid var(--border);
+      padding: 20px 16px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .ps-logo {
+      display: flex; align-items: center; gap: 8px;
+      padding: 4px 8px 20px;
+      font-family: var(--font-head);
+      font-size: 1rem; font-weight: 700;
+      color: var(--volt);
+    }
+    .ps-logo-icon {
+      width: 26px; height: 26px;
+      background: var(--volt);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+    }
+    .ps-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px;
+      border-radius: 9px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .ps-item.active {
+      background: rgba(200,255,0,0.08);
+      color: var(--volt);
+    }
+    .preview-main { padding: 24px; }
+    .pm-greeting {
+      font-family: var(--font-head);
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .pm-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 10px; margin-bottom: 16px;
+    }
+    .pm-stat {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .pm-stat-val {
+      font-family: var(--font-head);
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--volt);
+    }
+    .pm-stat-lbl { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
+    .pm-tasks { display: flex; flex-direction: column; gap: 8px; }
+    .pm-task {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 12px;
+      font-size: 0.78rem;
+    }
+    .pm-check {
+      width: 16px; height: 16px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+    .pm-check.done { background: var(--volt); }
+    .pm-check.todo { border: 1.5px solid var(--text-muted); }
+    .pm-task-name { flex: 1; color: var(--text-sub); }
+    .pm-task.done .pm-task-name { text-decoration: line-through; color: var(--text-muted); }
+    .pm-xp {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--volt);
+      background: var(--volt-dim);
+      padding: 2px 7px; border-radius: 99px;
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════ MARQUEE ══════════════ */
+    .marquee-section {
+      position: relative; z-index: 2;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex;
+      animation: marquee-scroll 25s linear infinite;
+      width: max-content;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 36px;
+      font-family: var(--font-head);
+      font-size: 0.95rem; font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .marquee-item .m-dot {
+      width: 5px; height: 5px;
+      background: var(--volt);
+      border-radius: 50%;
+    }
+    .marquee-item.highlight { color: var(--volt); }
+
+    /* ══════════════ FEATURES ══════════════ */
+    .section {
+      position: relative; z-index: 2;
+      padding: 120px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--volt);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .section-label::before {
+      content: '//';
+      color: var(--text-muted);
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      max-width: 720px;
+    }
+    .section-title em {
+      font-style: normal;
+      color: var(--volt);
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-top: 20px;
+    }
+
+    /* ── Features Bento Grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+      margin-top: 64px;
+    }
+
+    .feat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      transition: all 0.3s var(--ease-out);
+      position: relative; overflow: hidden;
+    }
+    .feat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,255,0,0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feat-card:hover { border-color: rgba(200,255,0,0.15); transform: translateY(-3px); }
+    .feat-card:hover::before { opacity: 1; }
+
+    .feat-card.span-5 { grid-column: span 5; }
+    .feat-card.span-7 { grid-column: span 7; }
+    .feat-card.span-4 { grid-column: span 4; }
+    .feat-card.span-8 { grid-column: span 8; }
+    .feat-card.span-6 { grid-column: span 6; }
+    .feat-card.span-12 { grid-column: span 12; }
+
+    .feat-icon {
+      width: 52px; height: 52px;
+      background: var(--volt-dim);
+      border: 1px solid var(--border-v);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .feat-title {
+      font-family: var(--font-head);
+      font-size: 1.3rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .feat-desc {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    /* Special cards */
+    .feat-card.accent {
+      background: linear-gradient(135deg, rgba(200,255,0,0.06) 0%, rgba(200,255,0,0.02) 100%);
+      border-color: var(--border-v);
+    }
+    .feat-card.dark {
+      background: rgba(4,6,14,0.9);
+    }
+
+    /* XP display inside card */
+    .feat-xp-demo {
+      margin-top: 24px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .feat-xp-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 10px 0 6px;
+    }
+    .feat-xp-fill {
+      height: 100%;
+      background: var(--volt);
+      border-radius: 99px;
+      box-shadow: 0 0 8px var(--volt-glow);
+      width: 68%;
+      animation: xp-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes xp-pulse {
+      0%,100% { box-shadow: 0 0 8px var(--volt-glow); }
+      50%      { box-shadow: 0 0 16px rgba(200,255,0,0.5); }
+    }
+
+    /* Chat demo inside card */
+    .feat-chat-demo {
+      margin-top: 20px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.8rem; line-height: 1.5;
+      max-width: 85%;
+    }
+    .chat-bubble.ai {
+      background: var(--glass2);
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+    }
+    .chat-bubble.user {
+      background: var(--volt);
+      color: #000;
+      align-self: flex-end;
+      font-weight: 600;
+    }
+
+    /* Task demo */
+    .feat-task-demo {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-top: 20px;
+    }
+    .feat-task-item {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 0.78rem;
+    }
+    .fti-check {
+      width: 16px; height: 16px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .fti-check.on { background: var(--volt); }
+    .fti-check.off { border: 1.5px solid var(--text-muted); }
+    .fti-label { flex: 1; color: var(--text-sub); }
+    .fti-xp {
+      font-size: 0.65rem;
+      color: var(--volt);
+      font-family: var(--font-mono);
+      background: var(--volt-dim);
+      padding: 2px 7px; border-radius: 99px;
+    }
+
+    /* Level badges */
+    .level-badges {
+      display: flex; gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .lv-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem; font-weight: 600;
+      border: 1px solid;
+    }
+    .lv-badge.l1 { background: rgba(200,255,0,0.08); border-color: rgba(200,255,0,0.2); color: var(--volt); }
+    .lv-badge.l2 { background: rgba(79,142,255,0.08); border-color: rgba(79,142,255,0.2); color: var(--blue); }
+    .lv-badge.l3 { background: rgba(155,93,229,0.08); border-color: rgba(155,93,229,0.2); color: var(--purple); }
+    .lv-badge.l4 { background: rgba(255,63,164,0.08); border-color: rgba(255,63,164,0.2); color: var(--pink); }
+
+    /* ══════════════ STATS SECTION ══════════════ */
+    .stats-section {
+      position: relative; z-index: 2;
+      padding: 80px 48px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(200,255,0,0.02) 0%, transparent 100%);
+    }
+    .stats-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 48px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--volt);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .stat-unit {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-top: 8px;
+    }
+    .stat-divider { width: 32px; height: 2px; background: var(--volt); border-radius: 99px; margin: 12px auto 0; opacity: 0.3; }
+
+    /* ══════════════ HOW IT WORKS ══════════════ */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 40px; left: 16%; right: 16%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-v), transparent);
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s var(--ease-out);
+    }
+    .step-card:hover { border-color: var(--border-v); transform: translateY(-4px); }
+
+    .step-num {
+      width: 56px; height: 56px;
+      background: var(--void);
+      border: 1px solid var(--border-v);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 1rem; font-weight: 600;
+      color: var(--volt);
+      margin: 0 auto 20px;
+      position: relative; z-index: 1;
+    }
+    .step-title {
+      font-family: var(--font-head);
+      font-size: 1.15rem; font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .step-desc { font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; }
+
+    /* ══════════════ TESTIMONIALS ══════════════ */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 64px;
+    }
+
+    .testi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.3s var(--ease-out);
+      backdrop-filter: blur(20px);
+    }
+    .testi-card:hover { border-color: rgba(200,255,0,0.12); transform: translateY(-3px); }
+    .testi-card.featured {
+      border-color: var(--border-v);
+      background: linear-gradient(135deg, rgba(200,255,0,0.04), var(--card));
+      grid-row: span 1;
+    }
+
+    .testi-stars { color: var(--volt); font-size: 0.85rem; letter-spacing: 3px; margin-bottom: 16px; }
+    .testi-text {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .testi-text strong { color: var(--text); font-weight: 600; }
+
+    .testi-author {
+      display: flex; align-items: center; gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .testi-av {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .testi-name { font-weight: 600; font-size: 0.88rem; }
+    .testi-role { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ══════════════ PRICING ══════════════ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 64px;
+      max-width: 800px;
+    }
+
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px;
+      transition: all 0.3s var(--ease-out);
+    }
+    .price-card:hover { transform: translateY(-4px); }
+    .price-card.popular {
+      border-color: var(--border-v);
+      background: linear-gradient(135deg, rgba(200,255,0,0.05), var(--card));
+      position: relative;
+    }
+    .popular-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--volt);
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 0.7rem; font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 99px;
+      letter-spacing: 0.05em;
+    }
+
+    .price-plan { font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--text-sub); margin-bottom: 16px; }
+    .price-amount {
+      font-family: var(--font-head);
+      font-size: 3rem; font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+    }
+    .price-amount span { font-size: 1.1rem; color: var(--text-sub); font-weight: 400; }
+    .price-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; margin-bottom: 24px; }
+
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .price-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.88rem; color: var(--text-sub);
+    }
+    .price-features li::before {
+      content: '✓';
+      color: var(--volt);
+      font-weight: 700;
+      font-size: 0.8rem;
+      width: 18px; flex-shrink: 0;
+    }
+
+    .btn-price-primary {
+      display: block; width: 100%;
+      padding: 14px;
+      background: var(--volt);
+      color: #000;
+      font-family: var(--font-body);
+      font-size: 0.95rem; font-weight: 700;
+      border-radius: 12px; border: none;
+      text-decoration: none; text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-price-primary:hover { opacity: 0.9; transform: scale(1.02); }
+
+    .btn-price-ghost {
+      display: block; width: 100%;
+      padding: 14px;
+      background: var(--glass);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem; font-weight: 600;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      text-decoration: none; text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-price-ghost:hover { border-color: var(--border-v); }
+
+    /* ══════════════ CTA SECTION ══════════════ */
+    .cta-section {
+      position: relative; z-index: 2;
+      padding: 120px 48px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(200,255,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      position: relative; z-index: 1;
+    }
+    .cta-title em { font-style: normal; color: var(--volt); }
+    .cta-sub {
+      font-size: 1.05rem; color: var(--text-sub);
+      margin-top: 20px; margin-bottom: 44px;
+      position: relative; z-index: 1;
+    }
+    .cta-actions { position: relative; z-index: 1; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ══════════════ FOOTER ══════════════ */
+    footer {
+      position: relative; z-index: 2;
+      padding: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 9px;
+      font-family: var(--font-head);
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .footer-logo .logo-bolt {
+      width: 28px; height: 28px;
+      background: var(--volt);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+    }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ══════════════ SCROLL ANIMATIONS ══════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ══════════════ RESPONSIVE ══════════════ */
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .feat-card.span-5, .feat-card.span-7,
+      .feat-card.span-4, .feat-card.span-8 { grid-column: span 1; }
+      .feat-card.span-12, .feat-card.span-6 { grid-column: span 2; }
+      .stats-inner { grid-template-columns: repeat(2,1fr); gap: 32px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      nav.scrolled { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .nav-mobile-toggle {
+        display: flex; align-items: center; justify-content: center;
+        width: 38px; height: 38px;
+        background: var(--glass2);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        font-size: 1rem; cursor: pointer;
+        color: var(--text);
+      }
+      .section { padding: 80px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feat-card.span-5,.feat-card.span-7,.feat-card.span-4,
+      .feat-card.span-8,.feat-card.span-12,.feat-card.span-6 { grid-column: span 1; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .preview-body { grid-template-columns: 1fr; }
+      .preview-sidebar { display: none; }
+      .cta-section { padding: 80px 20px; }
+      footer { padding: 32px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      body { cursor: auto; }
+      #cursor, #cursor-ring { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- Canvas Background -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="navbar">
+  <a href="landing.html" class="nav-logo">
+    <div class="logo-bolt">⚡</div>
+    ASCEND<span>AI</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <a href="index.html" class="btn-nav-ghost">Sign In</a>
+    <a href="index.html#register" class="btn-nav-primary">Get Started Free →</a>
+    <button class="nav-mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    V2.0 — Now with GPT-4o Intelligence
+  </div>
+
+  <h1 class="hero-title">
+    Your Life,<br>
+    <span class="line-volt">Gamified.</span>
+    Powered by AI.
+  </h1>
+
+  <p class="hero-sub">
+    ASCEND turns your daily tasks into an RPG. Earn XP, level up, and chat with your AI productivity coach. The most addictive way to get things done.
+  </p>
+
+  <div class="hero-actions">
+    <a href="index.html" class="btn-hero-primary">
+      Start Ascending Free
+      <span class="btn-arrow">→</span>
+    </a>
+    <a href="#features" class="btn-hero-ghost">
+      ▶ See How It Works
+    </a>
+  </div>
+
+  <div class="hero-social-proof">
+    <div class="avatars-stack">
+      <div class="av av-1">AJ</div>
+      <div class="av av-2">MR</div>
+      <div class="av av-3">SK</div>
+      <div class="av av-4">LN</div>
+      <div class="av av-5">DK</div>
+    </div>
+    <div class="proof-text">
+      <div class="stars">★★★★★</div>
+      Loved by <strong>12,400+</strong> productivity freaks
+    </div>
+  </div>
+
+  <!-- App Preview -->
+  <div class="hero-preview">
+    <div class="preview-glow"></div>
+    <div class="preview-window">
+      <div class="preview-topbar">
+        <div class="preview-dots">
+          <div class="preview-dot pd-r"></div>
+          <div class="preview-dot pd-y"></div>
+          <div class="preview-dot pd-g"></div>
+        </div>
+        <div class="preview-bar">🔒 localhost:8000/frontend/dashboard.html</div>
+      </div>
+      <div class="preview-body">
+        <div class="preview-sidebar">
+          <div class="ps-logo">
+            <div class="ps-logo-icon">⚡</div>
+            ASCEND
+          </div>
+          <div class="ps-item active">🏠 Dashboard</div>
+          <div class="ps-item">📋 Tasks</div>
+          <div class="ps-item">🤖 AI Chat</div>
+          <div class="ps-item">👤 Profile</div>
+        </div>
+        <div class="preview-main">
+          <div class="pm-greeting">Good morning, Alex 👋</div>
+          <div class="pm-stats">
+            <div class="pm-stat">
+              <div class="pm-stat-val">340</div>
+              <div class="pm-stat-lbl">Total XP</div>
+            </div>
+            <div class="pm-stat">
+              <div class="pm-stat-val">4</div>
+              <div class="pm-stat-lbl">Level</div>
+            </div>
+            <div class="pm-stat">
+              <div class="pm-stat-val">7🔥</div>
+              <div class="pm-stat-lbl">Streak</div>
+            </div>
+          </div>
+          <div class="pm-tasks">
+            <div class="pm-task done">
+              <div class="pm-check done"></div>
+              <span class="pm-task-name">Complete morning workout</span>
+              <span class="pm-xp">+10 XP</span>
+            </div>
+            <div class="pm-task done">
+              <div class="pm-check done"></div>
+              <span class="pm-task-name">Read 20 pages</span>
+              <span class="pm-xp">+10 XP</span>
+            </div>
+            <div class="pm-task">
+              <div class="pm-check todo"></div>
+              <span class="pm-task-name">Review quarterly goals</span>
+              <span class="pm-xp">+10 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MARQUEE ═══════════════ -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item highlight"><span class="m-dot"></span> Earn XP Every Day</div>
+    <div class="marquee-item"><span class="m-dot"></span> GPT-4o AI Coach</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Level Up Your Life</div>
+    <div class="marquee-item"><span class="m-dot"></span> Task Gamification</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Daily Streaks</div>
+    <div class="marquee-item"><span class="m-dot"></span> Dark Mode Native</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Zero Distraction</div>
+    <div class="marquee-item"><span class="m-dot"></span> Rank System</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Earn XP Every Day</div>
+    <div class="marquee-item"><span class="m-dot"></span> GPT-4o AI Coach</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Level Up Your Life</div>
+    <div class="marquee-item"><span class="m-dot"></span> Task Gamification</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Daily Streaks</div>
+    <div class="marquee-item"><span class="m-dot"></span> Dark Mode Native</div>
+    <div class="marquee-item highlight"><span class="m-dot"></span> Zero Distraction</div>
+    <div class="marquee-item"><span class="m-dot"></span> Rank System</div>
+  </div>
+</div>
+
+<!-- ═══════════════ FEATURES ═══════════════ -->
+<section class="section" id="features">
+  <div class="reveal">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need to <em>dominate</em> your goals</h2>
+    <p class="section-sub">Built for people who are serious about growth. Every feature is designed to keep you moving forward.</p>
+  </div>
+
+  <div class="features-grid">
+    <!-- XP Gamification — large left -->
+    <div class="feat-card accent span-5 reveal reveal-delay-1">
+      <div class="feat-icon">⚡</div>
+      <div class="feat-title">XP & Level System</div>
+      <div class="feat-desc">Complete tasks and watch your XP bar fill up. Every 100 XP earns you a new level. Progress feels real because it is.</div>
+      <div class="feat-xp-demo">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono)">LEVEL 4</span>
+          <span style="font-size:0.75rem;color:var(--volt);font-family:var(--font-mono)">68 / 100 XP</span>
+        </div>
+        <div class="feat-xp-bar"><div class="feat-xp-fill"></div></div>
+        <div class="level-badges">
+          <span class="lv-badge l1">🌱 Beginner</span>
+          <span class="lv-badge l2">⚡ Grinder</span>
+          <span class="lv-badge l3">🔥 Elite</span>
+          <span class="lv-badge l4">👑 Legend</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Chat — large right -->
+    <div class="feat-card dark span-7 reveal reveal-delay-2">
+      <div class="feat-icon">🤖</div>
+      <div class="feat-title">GPT-4o AI Coach</div>
+      <div class="feat-desc">Your personal AI that knows your goals, keeps conversation context, and gives actionable advice — not generic tips.</div>
+      <div class="feat-chat-demo">
+        <div class="chat-bubble ai">I've noticed you've completed 7 tasks this week. Your focus is strongest on mornings. Want me to plan your day around that? 📊</div>
+        <div class="chat-bubble user">Yes! Build me a power morning routine</div>
+        <div class="chat-bubble ai">Here's your optimized 90-minute protocol: <strong>6am workout → 7am deep work block → 8:30am review...</strong> 💪</div>
+      </div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="feat-card span-4 reveal reveal-delay-1">
+      <div class="feat-icon">📋</div>
+      <div class="feat-title">Smart Task System</div>
+      <div class="feat-desc">Add, complete, filter. Every task earns XP. Deleting an incomplete task even revokes points — keep it honest.</div>
+      <div class="feat-task-demo">
+        <div class="feat-task-item">
+          <div class="fti-check on"></div>
+          <span class="fti-label">Morning meditation</span>
+          <span class="fti-xp">+10 XP</span>
+        </div>
+        <div class="feat-task-item">
+          <div class="fti-check on"></div>
+          <span class="fti-label">Read 20 pages</span>
+          <span class="fti-xp">+10 XP</span>
+        </div>
+        <div class="feat-task-item">
+          <div class="fti-check off"></div>
+          <span class="fti-label">Write 500 words</span>
+          <span class="fti-xp">+10 XP</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streaks -->
+    <div class="feat-card span-4 reveal reveal-delay-2">
+      <div class="feat-icon">🔥</div>
+      <div class="feat-title">Daily Streaks</div>
+      <div class="feat-desc">Log in every day to keep your streak alive. The system calculates streaks automatically and displays them on your dashboard.</div>
+      <div style="margin-top:24px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+        <div style="text-align:center" class="streak-day active">
+          <div style="height:32px;background:var(--volt);border-radius:6px;margin-bottom:4px;box-shadow:0 0 8px var(--volt-glow)"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">M</span>
+        </div>
+        <div style="text-align:center">
+          <div style="height:32px;background:var(--volt);border-radius:6px;margin-bottom:4px;box-shadow:0 0 8px var(--volt-glow)"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">T</span>
+        </div>
+        <div style="text-align:center">
+          <div style="height:32px;background:var(--volt);border-radius:6px;margin-bottom:4px;box-shadow:0 0 8px var(--volt-glow)"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">W</span>
+        </div>
+        <div style="text-align:center">
+          <div style="height:32px;background:var(--volt);border-radius:6px;margin-bottom:4px;box-shadow:0 0 8px var(--volt-glow)"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">T</span>
+        </div>
+        <div style="text-align:center">
+          <div style="height:32px;background:var(--volt);border-radius:6px;margin-bottom:4px;box-shadow:0 0 8px var(--volt-glow)"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">F</span>
+        </div>
+        <div style="text-align:center">
+          <div style="height:32px;background:rgba(200,255,0,0.1);border-radius:6px;border:1px dashed var(--border-v);margin-bottom:4px"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">S</span>
+        </div>
+        <div style="text-align:center">
+          <div style="height:32px;background:rgba(200,255,0,0.1);border-radius:6px;border:1px dashed var(--border-v);margin-bottom:4px"></div>
+          <span style="font-size:0.6rem;color:var(--text-muted);font-family:var(--font-mono)">S</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;text-align:center;font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--volt)">5🔥 Day Streak</div>
+    </div>
+
+    <!-- Profile -->
+    <div class="feat-card span-4 reveal reveal-delay-3">
+      <div class="feat-icon">👤</div>
+      <div class="feat-title">Achievements & Profile</div>
+      <div class="feat-desc">Your XP, level, completed tasks, and streak — all displayed in a beautiful profile. Achievements unlock as you grow.</div>
+    </div>
+
+    <!-- Security — wide bottom -->
+    <div class="feat-card span-6 reveal reveal-delay-1">
+      <div class="feat-icon">🔐</div>
+      <div class="feat-title">Secure Auth System</div>
+      <div class="feat-desc">bcrypt password hashing, PHP sessions, and server-side API key storage. Your data and OpenAI key are never exposed to the frontend.</div>
+    </div>
+
+    <!-- Mobile first -->
+    <div class="feat-card span-6 reveal reveal-delay-2">
+      <div class="feat-icon">📱</div>
+      <div class="feat-title">Mobile First Design</div>
+      <div class="feat-desc">Fully responsive. Collapsible sidebar, touch-optimized interactions, and a layout that feels native on any screen size.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ STATS ═══════════════ -->
+<div class="stats-section">
+  <div class="stats-inner">
+    <div class="reveal">
+      <div class="stat-num" data-target="12400">0</div>
+      <div class="stat-unit">Active users leveling up</div>
+      <div class="stat-divider"></div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="stat-num" data-target="840000">0</div>
+      <div class="stat-unit">Tasks completed globally</div>
+      <div class="stat-divider"></div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="stat-num" data-target="98">0</div>
+      <div class="stat-unit">% uptime guaranteed</div>
+      <div class="stat-divider"></div>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="stat-num" data-target="4">0</div>
+      <div class="stat-unit">AI models powering the coach</div>
+      <div class="stat-divider"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="section" id="how-it-works">
+  <div class="reveal">
+    <div class="section-label">Process</div>
+    <h2 class="section-title">From zero to <em>legendary</em> in 3 steps</h2>
+    <p class="section-sub">No fluff. No complexity. Just a system that gets you from where you are to where you want to be.</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card reveal reveal-delay-1">
+      <div class="step-num">01</div>
+      <div class="step-title">Create Your Account</div>
+      <div class="step-desc">Sign up in seconds. No credit card, no friction. Your XP journey starts at zero and only goes up from here.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <div class="step-num">02</div>
+      <div class="step-title">Add Tasks & Complete Them</div>
+      <div class="step-desc">Add anything — workout, read, meditate, ship code. Every checkbox you tick earns real XP and pushes your level forward.</div>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <div class="step-num">03</div>
+      <div class="step-title">Chat With Your AI Coach</div>
+      <div class="step-desc">Add your OpenAI key once, and unlock an AI that remembers your conversation and coaches you to the next level — literally.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+<section class="section" id="testimonials" style="padding-top:0">
+  <div class="reveal">
+    <div class="section-label">Social Proof</div>
+    <h2 class="section-title">People are <em>obsessed</em></h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testi-card featured reveal reveal-delay-1">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">
+        "I've tried Todoist, Notion, every app out there. <strong>ASCEND is the only one I actually keep using</strong> — the XP system makes completing tasks feel like a game. I'm on a 47-day streak."
+      </div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#c8ff00,#00d4ff);color:#000">AJ</div>
+        <div>
+          <div class="testi-name">Alex Johnson</div>
+          <div class="testi-role">Software Engineer · Level 23</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">
+        "The AI coach is <strong>genuinely useful</strong>, not just a chatbot. It helped me redesign my morning routine and I've been more productive in the last month than the entire year before."
+      </div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#ff3fa4,#9b5de5)">MR</div>
+        <div>
+          <div class="testi-name">Maya Ramirez</div>
+          <div class="testi-role">Entrepreneur · Level 18</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card reveal reveal-delay-3">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">
+        "Dark mode, no ads, no algorithm trying to steal my attention. Just <strong>clean, focused productivity</strong>. The design alone is worth it — looks better than any SaaS I've paid for."
+      </div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#4f8eff,#00d4ff)">SK</div>
+        <div>
+          <div class="testi-name">Sam Kim</div>
+          <div class="testi-role">Designer · Level 15</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PRICING ═══════════════ -->
+<section class="section" id="pricing" style="padding-top:0">
+  <div class="reveal">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple, <em>honest</em> pricing</h2>
+    <p class="section-sub">Start free. Upgrade when you're ready. No sneaky trials, no credit card required to begin.</p>
+  </div>
+
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-plan">Free Forever</div>
+      <div class="price-amount">$0<span>/mo</span></div>
+      <div class="price-desc">Everything you need to get started</div>
+      <ul class="price-features">
+        <li>Unlimited tasks</li>
+        <li>Full XP & level system</li>
+        <li>Daily streak tracking</li>
+        <li>Dashboard & profile</li>
+        <li>Bring your own OpenAI key</li>
+      </ul>
+      <a href="index.html" class="btn-price-ghost">Start for Free →</a>
+    </div>
+
+    <div class="price-card popular">
+      <div class="popular-badge">MOST POPULAR</div>
+      <div class="price-plan">Pro</div>
+      <div class="price-amount">$9<span>/mo</span></div>
+      <div class="price-desc">For serious goal achievers</div>
+      <ul class="price-features">
+        <li>Everything in Free</li>
+        <li>AI coach included (no key needed)</li>
+        <li>Advanced analytics dashboard</li>
+        <li>Task categories & priorities</li>
+        <li>Custom XP multipliers</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="index.html" class="btn-price-primary">Get Pro → </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA ═══════════════ -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-title reveal">
+    Stop planning.<br>Start <em>ascending.</em>
+  </div>
+  <p class="cta-sub reveal reveal-delay-1">Join 12,400+ people who turned their daily tasks into an XP machine.</p>
+  <div class="cta-actions reveal reveal-delay-2">
+    <a href="index.html" class="btn-hero-primary">
+      Create Free Account
+      <span class="btn-arrow">→</span>
+    </a>
+    <a href="index.html" class="btn-hero-ghost">Sign In</a>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="footer-inner">
+    <a href="landing.html" class="footer-logo">
+      <div class="logo-bolt">⚡</div>
+      ASCEND AI
+    </a>
+    <ul class="footer-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="index.html">Login</a></li>
+      <li><a href="index.html">Sign Up</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 ASCEND AI. Built for winners.</p>
+  </div>
+</footer>
+
+<script>
+/* ── Custom Cursor ── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+});
+
+(function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+  requestAnimationFrame(animRing);
+})();
+
+document.querySelectorAll('a, button, .feat-card, .testi-card, .step-card, .price-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform += ' scale(1.8)';
+    ring.style.width = '56px'; ring.style.height = '56px';
+    ring.style.borderColor = 'rgba(200,255,0,0.8)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width = '36px'; ring.style.height = '36px';
+    ring.style.borderColor = 'rgba(200,255,0,0.5)';
+  });
+});
+
+/* ── Canvas Particle Grid ── */
+const canvas = document.getElementById('bg-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.4 + 0.05;
+    this.color = Math.random() > 0.8 ? '200,255,0' : '255,255,255';
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+// Connection lines
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(200,255,0,${0.04 * (1 - dist/100)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => { p.update(); p.draw(); });
+  drawConnections();
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ── Navbar scroll ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ── Scroll Reveal ── */
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+/* ── Counter Animation ── */
+function animateCounter(el, target) {
+  const suffix = target >= 1000 ? (target >= 100000 ? 'K+' : '+') : (target === 98 ? '%' : '');
+  const displayTarget = target >= 100000 ? Math.round(target/1000) : target;
+  let current = 0;
+  const step = displayTarget / 60;
+  const interval = setInterval(() => {
+    current = Math.min(current + step, displayTarget);
+    el.textContent = Math.floor(current) + suffix;
+    if (current >= displayTarget) clearInterval(interval);
+  }, 16);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const target = parseInt(e.target.dataset.target);
+      animateCounter(e.target, target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+/* ── Mobile menu ── */
+function toggleMobileMenu() {
+  alert('Sign in to access the app!');
+}
+
+/* ── Smooth anchor scrolling ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>

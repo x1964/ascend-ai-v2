@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASCEND AI — Tasks</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>⚡</text></svg>">
+</head>
+<body>
+  <div class="bg-orbs"></div>
+  <div class="bg-grid"></div>
+  <div id="toast-container"></div>
+  <button class="mobile-nav-toggle">☰</button>
+  <div class="sidebar-overlay"></div>
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo"><div class="logo-bolt">⚡</div><span class="logo-text">ASCEND</span></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Navigate</div>
+        <a href="dashboard.html" class="nav-item"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="tasks.html"     class="nav-item"><span class="nav-icon">📋</span>Tasks</a>
+        <a href="chat.html"      class="nav-item"><span class="nav-icon">🤖</span>AI Chat</a>
+        <div class="nav-section-label">Account</div>
+        <a href="profile.html"   class="nav-item"><span class="nav-icon">👤</span>Profile</a>
+        <a href="#" class="nav-item" onclick="logout();return false;"><span class="nav-icon">🚪</span>Logout</a>
+      </nav>
+      <div class="sidebar-user" onclick="window.location='profile.html'">
+        <div class="user-avatar" id="user-avatar-text">?</div>
+        <div class="user-info">
+          <div class="user-name"  id="sidebar-user-name">Loading…</div>
+          <div class="user-level" id="sidebar-user-level">LVL 1 · 0 XP</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h2>My Tasks</h2>
+          <div class="page-subtitle">// complete tasks · earn XP · level up</div>
+        </div>
+      </div>
+
+      <!-- Mini Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+        <div class="stat-card"><span class="stat-icon">📋</span><div class="stat-value" id="stat-total">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><span class="stat-icon">✅</span><div class="stat-value" id="stat-done">0</div><div class="stat-label">Done</div></div>
+        <div class="stat-card"><span class="stat-icon">⏳</span><div class="stat-value" id="stat-pending">0</div><div class="stat-label">Pending</div></div>
+      </div>
+
+      <!-- Add Task -->
+      <div class="card mb-20">
+        <span class="card-label">New Task</span>
+        <form id="add-task-form" class="add-task-form" onsubmit="addTask(event)">
+          <input class="form-input" type="text" id="new-task-input"
+            placeholder="e.g. Read 20 pages, Go for a run, Ship the feature…"
+            autocomplete="off" maxlength="255">
+          <button type="submit" class="btn btn-primary">➕ Add</button>
+        </form>
+      </div>
+
+      <!-- Filter -->
+      <div class="filter-row">
+        <button class="filter-chip active" data-filter="all"       onclick="filterTasks('all')">All</button>
+        <button class="filter-chip"        data-filter="active"    onclick="filterTasks('active')">Active</button>
+        <button class="filter-chip"        data-filter="completed" onclick="filterTasks('completed')">Completed</button>
+      </div>
+
+      <!-- Task List -->
+      <div class="card">
+        <div id="task-list" class="task-list">
+          <div class="empty-state"><div class="empty-icon">⏳</div><p>Loading tasks…</p></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
